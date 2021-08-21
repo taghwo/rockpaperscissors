@@ -210,9 +210,13 @@
               return "You cannot cancel this game, because player two already joined";
           }
           
-          if(game.player1 == msg.sender){
-              
+          if(game.player2 != address(0)){
+              totalEarning[game.player1] += game.leastStakeAbleAmount;
+              totalEarning[game.player2] += game.leastStakeAbleAmount;
+          }else{
+              totalEarning[game.player1] += game.leastStakeAbleAmount;
           }
+          
           game.isActive = false;
           emit Cancelled(name, cancelledBy, cancelledAt);
           
