@@ -43,7 +43,7 @@
      event Created(string indexed name, uint256  leastStakeAbleAmount, address indexed player);
      event Registered(string indexed name, uint256  leastStakeAbleAmount, address indexed player);
      event Played(string indexed name, string indexed hand, address indexed player);
-     event Drawn(string indexed name, address indexed player1, address indexed player2);
+     event Drew(string indexed name, address indexed player1, address indexed player2);
      event Won(string indexed name, address indexed player, uint256 amountWon);
      event Paid(string indexed name, address indexed player, uint256 amountWon);
      event Withdrew(uint256 amount, address indexed player);
@@ -186,7 +186,7 @@
               totalEarning[game.player1] += game.leastStakeAbleAmount;
               totalEarning[game.player1] += game.leastStakeAbleAmount;
               
-              emit Drawn(game.name, game.player1, game.player2);
+              emit Drew(game.name, game.player1, game.player2);
           }else if(game.player1Score > game.player2Score){
                game.winner = game.player1;
                totalEarning[game.winner] += game.totalStake;
