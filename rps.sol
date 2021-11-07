@@ -1,11 +1,13 @@
  // SPDX-License-Identifier: GPL-3.0
- pragma solidity ^0.8.4;
- 
+pragma solidity ^0.8.0;
+pragma experimental ABIEncoderV2;
+
+import "@openzeppelin/contracts/utils/Strings.sol";
+
  contract RPS{
      address owner;
-     
      mapping(string => mapping(string => string)) winningCombination;
-     
+
      struct Game{
          uint256 player1CurrentRound;
          uint256 player2CurrentRound;
@@ -52,7 +54,6 @@
      ///Initiliaze attributes
      constructor(){
          owner = msg.sender;
-         
          hands['rock'] = 1;
          hands['paper'] = 2;
          hands['scissors'] = 3;
@@ -67,7 +68,7 @@
      
      /// @dev Create new game and set msg.sender as player1
      /// @param name of Game
-     function newGame(string calldata name) external payable{
+     function new(string calldata name) external payable{
         require(keccak256(bytes(games[name].name)) != keccak256(bytes(name)), "This game already exists");
         require(msg.value != 0, "Please add a wager value");
         
@@ -98,13 +99,15 @@
     
      /// @dev Register new player to game
      /// @param name of Game
-     function joinGame(string calldata name) external payable ExistingActiveGame(name){
+     function join(string calldata name) external payable ExistingActiveGame(name){
         require(games[name].player2 == address(0), "Game is full");
-        require(games[name].player1 != msg.sender || games[name].player2 != msg.sender, "You are in this game already");
-        require(games[name].leastStakeAbleAmount == msg.value, 
-        string(abi.encodePacked("The money you staked is below or above minimum stake-able amount which is"," ","games[name].leastStakeAbleAmount"))
+        require(games[name].player1 != msg.sender, "You are in this game already");
+        require(games[name].player2 != msg.sender, "You are in this game already");
+        string memory leastAmount = Strings.toString(games[name].leastStakeAbleAmount);
+        require(games[name].leastStakeAbleAmount == msg.value,
+        string(abi.encodePacked("The value you staked is below or above minimum stake-able amount which is ", leastAmount))
         );
-        
+
         games[name].player2 = msg.sender;
         games[name].totalStake += msg.value;
         
