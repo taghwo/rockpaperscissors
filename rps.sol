@@ -68,7 +68,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
      
      /// @dev Create new game and set msg.sender as player1
      /// @param name of Game
-     function new(string calldata name) external payable{
+     function create(string calldata name) external payable{
         require(keccak256(bytes(games[name].name)) != keccak256(bytes(name)), "This game already exists");
         require(msg.value != 0, "Please add a wager value");
         
