@@ -36,7 +36,7 @@
      }
      
      modifier ExistingActiveGame(string calldata name){
-         require(keccak256(bytes(games[name].name)) == keccak256(bytes(name)) && games[name].isActive == false, 'Game does not exist or completed');
+         require(keccak256(bytes(games[name].name)) == keccak256(bytes(name)) && games[name].isActive == true, 'Game does not exist or completed');
          _;
      }
      
